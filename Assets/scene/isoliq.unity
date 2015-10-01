@@ -193,6 +193,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tex: {fileID: 0}
   tex_size: 20
+  some_cube: {fileID: 1628883054}
 --- !u!81 &1472962676
 AudioListener:
   m_ObjectHideFlags: 0
@@ -259,6 +260,10 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!1 &1628883054 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 144504, guid: a5102ba50883df44ca7e522bc5ad58f3, type: 2}
+  m_PrefabInternal: {fileID: 1750440710}
 --- !u!1001 &1750440710
 Prefab:
   m_ObjectHideFlags: 0
@@ -268,11 +273,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 460766, guid: a5102ba50883df44ca7e522bc5ad58f3, type: 2}
       propertyPath: m_LocalPosition.x
-      value: .432595521
+      value: 2.52999997
       objectReference: {fileID: 0}
     - target: {fileID: 460766, guid: a5102ba50883df44ca7e522bc5ad58f3, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 1.34439433
+      value: 2.8900001
       objectReference: {fileID: 0}
     - target: {fileID: 460766, guid: a5102ba50883df44ca7e522bc5ad58f3, type: 2}
       propertyPath: m_LocalPosition.z
