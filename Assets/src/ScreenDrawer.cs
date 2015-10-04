@@ -14,41 +14,9 @@ public class ScreenDrawer : MonoBehaviour {
 	void Start () {
 	
 		tex = new Texture2D(Screen.width, Screen.height);
+		init_cube_templates();
+		init_terrain_data();
 		
-		marching_cube_templates[0] = null; //new 2(0, 0);
-		marching_cube_templates[1] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.0f)};
-		marching_cube_templates[2] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[3] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[4] = new Vector2[] {new Vector2(0.5f, 1.0f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[5] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 1.0f), new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[6] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(0.5f, 1.0f)};
-		marching_cube_templates[7] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 1.0f)};
-		marching_cube_templates[8] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 1.0f)};
-		marching_cube_templates[9] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(0.5f, 1.0f)};
-		marching_cube_templates[10] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.0f), new Vector2(0.5f, 1.0f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[11] = new Vector2[] {new Vector2(0.5f, 1.0f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[12] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[13] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.5f)};
-		marching_cube_templates[14] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.0f)};
-		marching_cube_templates[15] = new Vector2[] {new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.2f), new Vector2(1.0f, 0.2f), new Vector2(0.0f, 0.5f), new Vector2(1.0f, 0.5f), new Vector2(0.0f, 0.7f), new Vector2(1.0f, 0.7f), new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f)}; //new Vector2[] {new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f), new Vector2(0.0f, 1.0f), new Vector2(1.0f, 0.0f)};
-		
-		for(int i = 0; i<  16; i++)
-		{
-			for(int j = 0; j<  16; j++)
-			{
-				bool_values[i, j] =  false;
-				
-			}
-		}
-		
-		for(int i = 1; i<  15; i++)
-		{
-			for(int j = 1; j<  15; j++)
-			{
-				bool_values[i, j] =  (Random.value > 0.5f) ;
-			
-			}
-		}
 		
 		//now that the values are set, lets draw them
 		for(int i = 0; i<  15; i++)
@@ -123,6 +91,59 @@ public class ScreenDrawer : MonoBehaviour {
 			return;
 		}
 		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), tex, ScaleMode.StretchToFill, true, 0);
+	}
+	
+	void init_cube_templates()
+	{
+		marching_cube_templates[0] = null; //new 2(0, 0);
+		marching_cube_templates[1] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.0f)};
+		marching_cube_templates[2] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[3] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[4] = new Vector2[] {new Vector2(0.5f, 1.0f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[5] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 1.0f), new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[6] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(0.5f, 1.0f)};
+		marching_cube_templates[7] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 1.0f)};
+		marching_cube_templates[8] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 1.0f)};
+		marching_cube_templates[9] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(0.5f, 1.0f)};
+		marching_cube_templates[10] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.0f), new Vector2(0.5f, 1.0f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[11] = new Vector2[] {new Vector2(0.5f, 1.0f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[12] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[13] = new Vector2[] {new Vector2(0.5f, 0.0f), new Vector2(1.0f, 0.5f)};
+		marching_cube_templates[14] = new Vector2[] {new Vector2(0.0f, 0.5f), new Vector2(0.5f, 0.0f)};
+		marching_cube_templates[15] = new Vector2[] {new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.0f), new Vector2(1.0f, 0.0f), new Vector2(0.0f, 0.2f), new Vector2(1.0f, 0.2f), new Vector2(0.0f, 0.5f), new Vector2(1.0f, 0.5f), new Vector2(0.0f, 0.7f), new Vector2(1.0f, 0.7f), new Vector2(0.0f, 1.0f), new Vector2(1.0f, 1.0f)}; //new Vector2[] {new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f), new Vector2(0.0f, 1.0f), new Vector2(1.0f, 0.0f)};
+		
+	}
+	
+	void init_terrain_data()
+	{
+		//set everything to false
+		for(int i = 0; i<  16; i++)
+		{
+			for(int j = 0; j<  16; j++)
+			{
+				bool_values[i, j] =  false;
+				
+			}
+		}
+		
+		//randomize the inner ones
+		for(int i = 1; i<  15; i++)
+		{
+			for(int j = 1; j<  15; j++)
+			{
+				bool_values[i, j] =  (Random.value > 0.5f) ;
+				
+			}
+		}
+		
+	}
+	
+	void determine_terrain_data()
+	{
+		//for each subdivision (so thats a for by for loop
+		// for each cube (n^3 now i think)
+		//see if the cube is within the bounds of this cube, and if it is, set its terrain data to true.
+		//break out of the loop if the data is true for this cube
 	}
 	
 }
