@@ -36,15 +36,6 @@ public class ScreenDrawer : MonoBehaviour {
 		{
 			for(int j = 0; j<  16; j++)
 			{
-				bool_values[i, j] =  false;
-				
-			}
-		}
-		
-		for(int i = 1; i<  15; i++)
-		{
-			for(int j = 1; j<  15; j++)
-			{
 				bool_values[i, j] =  (Random.value > 0.5f) ;
 			
 			}
@@ -57,13 +48,13 @@ public class ScreenDrawer : MonoBehaviour {
 			{
 				int index = 0;
 				if(bool_values[i,j])
-					index += 1;
-				if(bool_values[i+1,j])
-					index += 2;
-				if(bool_values[i+1, j+1])
-					index += 4;
-				if(bool_values[i, j+1])
 					index += 8;
+				if(bool_values[i+1,j])
+					index += 4;
+				if(bool_values[i+1, j+1])
+					index += 2;
+				if(bool_values[i, j+1])
+					index += 1;
 					
 				int _multi_val_x = Screen.width / 15;
 				int _multi_val_y = Screen.height / 15;
