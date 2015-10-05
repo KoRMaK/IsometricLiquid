@@ -1,50 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ScreenDrawer : MonoBehaviour {
 
 	public Texture2D tex;
-	public int tex_size = 20;
 	public GameObject some_cube;
+	public static int resolution = 16;
 	//create a 16x16 array of booleans
-	public bool[,] bool_values = new bool[16,16];
+	public bool[,] bool_values = new bool[resolution, resolution];
 	public Vector2[][] marching_cube_templates = new Vector2[16][];
+	
+	public GameObject cube_prefab;
+	public List<GameObject> cubes;
 	
 	// Use this for initialization
 	void Start () {
-	
+		
+		cubes = new List<GameObject>();
 		tex = new Texture2D(Screen.width, Screen.height);
 		init_cube_templates();
 		init_terrain_data();
+		draw_marched_squares();
 		
-		
-		//now that the values are set, lets draw them
-		for(int i = 0; i<  15; i++)
+		//create a bunch of cubes
+		for(int i = 0; i < 5; i++)
 		{
-			for(int j = 0; j < 15; j++)
-			{
-				int index = 0;
-				if(bool_values[i,j])
-					index += 1;
-				if(bool_values[i+1,j])
-					index += 2;
-				if(bool_values[i+1, j+1])
-					index += 4;
-				if(bool_values[i, j+1])
-					index += 8;
-					
-				int _multi_val_x = Screen.width / 15;
-				int _multi_val_y = Screen.height / 15;
-				//ok we got our index, now draw it
-				if(marching_cube_templates[index] != null)
-				{
-					for(int idx = 0; idx + 1< marching_cube_templates[index].Length; idx += 2)
-					{
-						TextureDraw.DrawLine(tex, (int)(marching_cube_templates[index][idx].x * _multi_val_x) + (i * _multi_val_x), (int)(marching_cube_templates[index][idx].y * _multi_val_y) + (j * _multi_val_y), (int)(marching_cube_templates[index][idx + 1].x * _multi_val_x) + (i * _multi_val_x), (int)(marching_cube_templates[index][idx + 1].y * _multi_val_y) + (j * _multi_val_y), Color.cyan);
-					}
-				}
-					
-			}
+			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(2.5f, 3f, 5f), Quaternion.identity)));
 		}
 		
 		/*
@@ -72,7 +54,7 @@ public class ScreenDrawer : MonoBehaviour {
 		
 		Camera cam = GetComponent<Camera>();
 		
-		Vector3 screen_coords = cam.WorldToScreenPoint(some_cube.transform.position);
+		//Vector3 screen_coords = cam.WorldToScreenPoint(some_cube.transform.position);
 		/*
 		for(int i = 0; i < 20; i++)
 		{
@@ -83,6 +65,11 @@ public class ScreenDrawer : MonoBehaviour {
 		}
 		tex.Apply();
 		*/
+		
+		tex = new Texture2D(Screen.width, Screen.height);
+		determine_terrain_data();
+		draw_marched_squares();
+		tex.Apply();
 	}
 	
 	void OnGUI() {
@@ -91,6 +78,40 @@ public class ScreenDrawer : MonoBehaviour {
 			return;
 		}
 		GUI.DrawTexture(new Rect(0, 0, Screen.width, Screen.height), tex, ScaleMode.StretchToFill, true, 0);
+	}
+	
+	void draw_marched_squares()
+	{
+	
+				//now that the values are set, lets draw them
+		for(int i = 0; i<  resolution - 1; i++)
+		{
+			for(int j = 0; j < resolution - 1; j++)
+			{
+				int index = 0;
+				if(bool_values[i,j])
+					index += 1;
+				if(bool_values[i+1,j])
+					index += 2;
+				if(bool_values[i+1, j+1])
+					index += 4;
+				if(bool_values[i, j+1])
+					index += 8;
+					
+				int _multi_val_x = Screen.width / (resolution - 1);
+				int _multi_val_y = Screen.height / (resolution - 1);
+				//ok we got our index, now draw it
+				if(marching_cube_templates[index] != null)
+				{
+					for(int idx = 0; idx + 1< marching_cube_templates[index].Length; idx += 2)
+					{
+						TextureDraw.DrawLine(tex, (int)(marching_cube_templates[index][idx].x * _multi_val_x) + (i * _multi_val_x), (int)(marching_cube_templates[index][idx].y * _multi_val_y) + (j * _multi_val_y), (int)(marching_cube_templates[index][idx + 1].x * _multi_val_x) + (i * _multi_val_x), (int)(marching_cube_templates[index][idx + 1].y * _multi_val_y) + (j * _multi_val_y), Color.cyan);
+					}
+				}					
+			
+			}
+		}
+		tex.Apply();
 	}
 	
 	void init_cube_templates()
@@ -117,9 +138,9 @@ public class ScreenDrawer : MonoBehaviour {
 	void init_terrain_data()
 	{
 		//set everything to false
-		for(int i = 0; i<  16; i++)
+		for(int i = 0; i<  resolution; i++)
 		{
-			for(int j = 0; j<  16; j++)
+			for(int j = 0; j<  resolution; j++)
 			{
 				bool_values[i, j] =  false;
 				
@@ -127,9 +148,9 @@ public class ScreenDrawer : MonoBehaviour {
 		}
 		
 		//randomize the inner ones
-		for(int i = 1; i<  15; i++)
+		for(int i = 1; i<  resolution - 1; i++)
 		{
-			for(int j = 1; j<  15; j++)
+			for(int j = 1; j<  resolution - 1; j++)
 			{
 				bool_values[i, j] =  (Random.value > 0.5f) ;
 				
@@ -144,6 +165,49 @@ public class ScreenDrawer : MonoBehaviour {
 		// for each cube (n^3 now i think)
 		//see if the cube is within the bounds of this cube, and if it is, set its terrain data to true.
 		//break out of the loop if the data is true for this cube
+		
+		int _multi_val_x = Screen.width / (resolution - 1);
+		int _multi_val_y = Screen.height / (resolution - 1);
+		
+		Camera cam = GetComponent<Camera>();
+		
+		
+		//set everything to false
+		for(int i = 0; i<  resolution; i++)
+		{
+			for(int j = 0; j<  resolution; j++)
+			{
+				bool_values[i, j] =  false;
+				
+			}
+		}
+		
+		
+		//randomize the inner ones
+		for(int i = 0; i<  resolution; i++)
+		{
+			for(int j = 0; j<  resolution; j++)
+			{
+				
+				foreach(GameObject _cube in cubes)
+				{
+					
+					
+					Vector3 screen_coords = cam.WorldToScreenPoint(_cube.transform.position);
+					Rect _r0 = new Rect(new Vector2(i * _multi_val_x, j * _multi_val_y), new Vector2(30, 30));
+					Rect _r1 = new Rect(new Vector2(screen_coords.x, screen_coords.y), new Vector2(50, 50));
+					if( RectangleCollisionChecker.intersects(_r0, _r1))
+					{
+						bool_values[i, j] =  true;
+						break;
+					}					
+					
+				}
+				
+			}
+		}
+		
+		
 	}
 	
 }
