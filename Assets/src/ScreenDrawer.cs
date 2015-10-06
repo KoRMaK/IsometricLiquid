@@ -69,6 +69,7 @@ public class ScreenDrawer : MonoBehaviour {
 		tex = new Texture2D(Screen.width, Screen.height);
 		determine_terrain_data();
 		draw_marched_squares();
+		draw_cubes();
 		tex.Apply();
 	}
 	
@@ -194,12 +195,17 @@ public class ScreenDrawer : MonoBehaviour {
 					
 					
 					Vector3 screen_coords = cam.WorldToScreenPoint(_cube.transform.position);
-					Rect _r0 = new Rect(new Vector2(i * _multi_val_x, j * _multi_val_y), new Vector2(30, 30));
-					Rect _r1 = new Rect(new Vector2(screen_coords.x, screen_coords.y), new Vector2(50, 50));
+
+					Rect _r0 = new Rect(new Vector2(i * _multi_val_x, j * _multi_val_y), new Vector2(_multi_val_x, _multi_val_y));
+					Rect _r1 = RectangleCollisionChecker.BoundsToScreenRect(_cube.GetComponent<Renderer>().bounds);
+					_r1.y = Screen.height - _r1.y;
+					//Rect _r11 = new Rect(new Vector2(screen_coords.x, screen_coords.y), new Vector2(50, 50));
+					//Debug.Log(" bounds _r1 bounds " + _r1.ToString());
+					//Debug.Log(" bounds _r11 " + _r11.ToString());
 					if( RectangleCollisionChecker.intersects(_r0, _r1))
 					{
 						bool_values[i, j] =  true;
-						break;
+						//break;
 					}					
 					
 				}
@@ -208,6 +214,18 @@ public class ScreenDrawer : MonoBehaviour {
 		}
 		
 		
+	}
+
+	void draw_cubes()
+	{
+		foreach (GameObject _cube in cubes) 
+		{
+			Rect _r1 = RectangleCollisionChecker.BoundsToScreenRect (_cube.GetComponent<Renderer> ().bounds);
+			TextureDraw.DrawLine(tex, (int)(_r1.x), (int)(Screen.height - _r1.y), (int)(_r1.xMax), (int)(Screen.height - _r1.y), Color.cyan);
+			//Rect _r2 = RectangleCollisionChecker.BoundsToScreenRect(_cube.GetComponent<Renderer>().bounds);
+			TextureDraw.DrawLine(tex, (int)(_r1.x), (int)(Screen.height - _r1.y), (int)(_r1.xMax), (int)(Screen.height - _r1.yMax), Color.cyan);
+		}
+		tex.Apply();
 	}
 	
 }
