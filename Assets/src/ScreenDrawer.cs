@@ -6,7 +6,7 @@ public class ScreenDrawer : MonoBehaviour {
 
 	public Texture2D tex;
 	public GameObject some_cube;
-	public static int resolution = 32;
+	public static int resolution = 5;
 	//create a 16x16 array of booleans
 	public bool[,] bool_values = new bool[resolution, resolution];
 	public Vector2[][] marching_cube_templates = new Vector2[16][];
@@ -180,6 +180,9 @@ public class ScreenDrawer : MonoBehaviour {
 				
 			}
 		}
+		
+		//first, carve up the region and parition them into areas with stuff
+		//given an XxY array
 		
 
 		for(int i = 0; i<  resolution; i++)
