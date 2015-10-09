@@ -6,7 +6,7 @@ public class ScreenDrawer : MonoBehaviour {
 
 	public Texture2D tex;
 	public GameObject some_cube;
-	public static int resolution = 5;
+	public static int resolution = 32;
 	//create a 16x16 array of booleans
 	public bool[,] bool_values = new bool[resolution, resolution];
 	public Vector2[][] marching_cube_templates = new Vector2[16][];
@@ -145,7 +145,8 @@ public class ScreenDrawer : MonoBehaviour {
 				
 			}
 		}
-		
+
+		/*
 		//randomize the inner ones
 		for(int i = 1; i<  resolution - 1; i++)
 		{
@@ -155,6 +156,7 @@ public class ScreenDrawer : MonoBehaviour {
 				
 			}
 		}
+		*/
 		
 	}
 	
@@ -180,11 +182,55 @@ public class ScreenDrawer : MonoBehaviour {
 				
 			}
 		}
-		
+
+		QuadTreeNode quad_tree = new QuadTreeNode(new Rect(0,0,Screen.width,Screen.height), bool_values, cubes, 6, 1);
 		//first, carve up the region and parition them into areas with stuff
 		//given an XxY array
+
+		//now traverse the quad tree and only do checks for areas that have hits in them
+		List<Rect> _rects_to_search = quad_tree.pluck_leaves();
+
+		foreach(Rect _rect in _rects_to_search)
+		{
+			TextureDraw.DrawRectangle(tex, _rect, Color.yellow);
+
+			for(int i = (int)_rect.x/_multi_val_x; i<  Mathf.CeilToInt((_rect.x +_rect.width)/_multi_val_x) && i < resolution; i++)
+			{
+				for(int j = (int)_rect.y/_multi_val_y; j<  Mathf.CeilToInt((_rect.y +_rect.height)/_multi_val_y) && j < resolution; j++)
+				{
+					Rect _r0 = new Rect(new Vector2(i * _multi_val_x, j * _multi_val_y), new Vector2(_multi_val_x, _multi_val_y));
+					TextureDraw.DrawRectangle(tex, _r0, Color.blue);
+
+
+					foreach(GameObject _cube in cubes)
+					{
+						if( bool_values[i, j] ==  true)
+							break;
+						
+						
+						Vector3 screen_coords = cam.WorldToScreenPoint(_cube.transform.position);
+						
+						Rect _r1 = RectangleCollisionChecker.BoundsToScreenRect(_cube.GetComponent<Renderer>().bounds);
+						TextureDraw.DrawRectangle(tex, _r1, Color.yellow);
+						//_r1.y = Screen.height - _r1.y;
+						//Rect _r11 = new Rect(new Vector2(screen_coords.x, screen_coords.y), new Vector2(50, 50));
+						//Debug.Log(" bounds _r1 bounds " + _r1.ToString());
+						//Debug.Log(" bounds _r11 " + _r11.ToString());
+						if( RectangleCollisionChecker.intersects(_r0, _r1))
+						{
+							bool_values[i, j] =  true;
+							break;
+						}					
+						
+					}
+
+
+				}
+			}
+		}
 		
 
+		/*
 		for(int i = 0; i<  resolution; i++)
 		{
 			for(int j = 0; j<  resolution; j++)
@@ -216,6 +262,7 @@ public class ScreenDrawer : MonoBehaviour {
 				
 			}
 		}
+		*/
 		
 		
 	}
