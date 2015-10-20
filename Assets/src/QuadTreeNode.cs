@@ -66,7 +66,7 @@ public class QuadTreeNode {
 				Rect _r1 = RectangleCollisionChecker.BoundsToScreenRect(_object.GetComponent<Renderer>().bounds);
 				//TextureDraw.DrawRectangle(tex, _r1, Color.yellow);
 
-				if( RectangleCollisionChecker.intersects(bounds, _r1))
+				if(RectangleCollisionChecker.CircleRectInsersects(new Circle(_r1.center, _r1.width ), bounds)) //if( RectangleCollisionChecker.intersects(bounds, _r1))
 				{
 					b_is_occupied =  true;
 					break;
@@ -101,20 +101,28 @@ public class QuadTreeNode {
 			//if collision(southeast, cube)
 
 		foreach(GameObject _object in collision_objects)
-		{			
+		{
+
+			//RectangleCollisionChecker.CircleRectInsersects(new Circle(_r1.center, _r1.width * 10), bounds)
 			
 			Rect _object_bounds = RectangleCollisionChecker.BoundsToScreenRect(_object.GetComponent<Renderer>().bounds);
+			Circle _obj_circle = new Circle(_object_bounds.center, _object_bounds.width);
+
 			//TextureDraw.DrawRectangle(tex, _r1, Color.yellow);
-			if(RectangleCollisionChecker.intersects(north_west_bounds, _object_bounds))
+			//if(RectangleCollisionChecker.intersects(north_west_bounds, _object_bounds))
+			if(RectangleCollisionChecker.CircleRectInsersects(_obj_circle, north_west_bounds))
 				this.northwest = new QuadTreeNode(north_west_bounds, this.bool_values, this.collision_objects, this.max_depth, this.depth + 1);
 
-			if(RectangleCollisionChecker.intersects(north_east_bounds, _object_bounds))
+			//if(RectangleCollisionChecker.intersects(north_east_bounds, _object_bounds))
+			if(RectangleCollisionChecker.CircleRectInsersects(_obj_circle, north_east_bounds))
 				this.northeast = new QuadTreeNode(north_east_bounds, this.bool_values, this.collision_objects, this.max_depth, this.depth + 1);
 					
-			if(RectangleCollisionChecker.intersects(south_east_bounds, _object_bounds))
+			//if(RectangleCollisionChecker.intersects(south_east_bounds, _object_bounds))
+			if(RectangleCollisionChecker.CircleRectInsersects(_obj_circle, south_east_bounds))
 				this.southeast = new QuadTreeNode(south_east_bounds, this.bool_values, this.collision_objects, this.max_depth, this.depth + 1);
 
-			if(RectangleCollisionChecker.intersects(south_west_bounds, _object_bounds))
+			//if(RectangleCollisionChecker.intersects(south_west_bounds, _object_bounds))
+			if(RectangleCollisionChecker.CircleRectInsersects(_obj_circle, south_west_bounds))
 				this.southwest = new QuadTreeNode(south_west_bounds, this.bool_values, this.collision_objects, this.max_depth, this.depth + 1);
 	
 			/*

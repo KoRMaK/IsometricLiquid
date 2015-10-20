@@ -8,14 +8,66 @@ public class TextureDraw {
 		//first, lets flop the y's because they shuld be in screen space
 		y0 = Screen.height - y0;
 		y1 = Screen.height - y1;
+
+		/*
+
+		float x,y;
+		float dy = y1-y0;    
+		float dx = x1-x0;    
+		float m = dy/dx; 
+		float dy_inc = 1;    
+		
+		if(  dy < 0 ) 
+			dy = -1;    
+		
+		float dx_inc = 1;    
+		if(  dx < 0 ) 
+			dx = -1; 
+		
+		if( Mathf.Abs(dy) > Mathf.Abs(dx) )
+		{
+
+			if(float.IsInfinity(m))
+				m = 0;
+
+			for( y = y1; y < y0; y += dy_inc )
+			{                
+				x = x0 + ( y - y0 ) * m;
+				//Debug.Log("Setting Pixel at: x=" + x + ", y=" + y);
+				tex.SetPixel((int)(x), (int)(y), col);       
+			}
+
+		}
+		else
+		{
+
+			for( x = x0; x < x1; x +=  dx_inc  ) 
+			{
+				y = y0 + ( x - x1 ) * m;
+				//Debug.Log("Setting Pixel at: x=" + x + ", y=" + y);
+				tex.SetPixel((int)(x), (int)(y), col);           
+			}
+
+		}
+		*/
+
 		int dy = (int)(y1-y0);
 		int dx = (int)(x1-x0);
 		int stepx, stepy;
 		
-		if (dy < 0) {dy = -dy; stepy = -1;}
-		else {stepy = 1;}
-		if (dx < 0) {dx = -dx; stepx = -1;}
-		else {stepx = 1;}
+		if (dy < 0)
+		{
+			dy = -dy; stepy = -1;
+		}else {
+			stepy = 1;
+		}
+
+		if (dx < 0) {
+			dx = -dx; stepx = -1;
+		}else {
+			stepx = 1;
+		}
+
 		dy <<= 1;
 		dx <<= 1;
 		
@@ -46,6 +98,8 @@ public class TextureDraw {
 				tex.SetPixel(x0, y0, col);
 			}
 		}
+
+
 	}
 	
 	public static void DrawLine(Texture2D tex, float x0, float y0, float x1, float y1, Color col)
@@ -68,6 +122,7 @@ public class TextureDraw {
 	
 	public static void ClearTexture(Texture2D tex)
 	{
+		/*
 		for(int x = 0; x < Screen.width; x++)
 		{
 			for(int y = 0; y < Screen.height; y++)
@@ -75,6 +130,18 @@ public class TextureDraw {
 				tex.SetPixel(x, y, Color.clear);
 			}
 		}
+		*/
+
+		Color fillColor  = Color.clear;
+		Color[] fillColorArray =  tex.GetPixels();
+		
+		for(var i = 0; i < fillColorArray.Length; ++i)
+		{
+			fillColorArray[i] = fillColor;
+		}
+		
+		tex.SetPixels( fillColorArray );
+
 	}
 	
 }

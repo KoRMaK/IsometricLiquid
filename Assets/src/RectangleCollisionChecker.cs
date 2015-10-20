@@ -16,6 +16,24 @@ public class RectangleCollisionChecker : MonoBehaviour {
 		// Create rect in screen space and return - does not account for camera perspective
 		return new Rect(origin.x - (origin.x - extent.x), Screen.height - origin.y, origin.x - extent.x, origin.y - extent.y);
 	}
+
+	public static bool CircleRectInsersects(Circle circle, Rect rect)
+	{
+		Vector2 circleDistance = new Vector2();
+
+		circleDistance.x = Mathf.Abs(circle.center.x - rect.center.x);
+		circleDistance.y = Mathf.Abs(circle.center.y - rect.center.y);
+		
+		if (circleDistance.x > (rect.width/2 + circle.radius)) { return false; }
+		if (circleDistance.y > (rect.height/2 + circle.radius)) { return false; }
+		
+		if (circleDistance.x <= (rect.width/2)) { return true; } 
+		if (circleDistance.y <= (rect.height/2)) { return true; }
+		
+		float cornerDistance_sq = Mathf.Pow((circleDistance.x - rect.width/2), 2) + Mathf.Pow((circleDistance.y - rect.height/2), 2);
+		
+		return (cornerDistance_sq <= Mathf.Pow(circle.radius, 2));
+	}
 	
 	// Use this for initialization
 	void Start () {
