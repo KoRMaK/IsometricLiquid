@@ -63,7 +63,7 @@ public class ScreenDrawer : MonoBehaviour {
 		Camera cam = GetComponent<Camera>();
 		
 		//Vector3 screen_coords = cam.WorldToScreenPoint(some_cube.transform.position);
-		TextureDraw.ClearTexture(tex);
+		//TextureDraw.ClearTexture(tex);
 
 		//set everything to false
 		for(int i = 0; i<  resolution; i++)
