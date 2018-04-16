@@ -1,5 +1,8 @@
-﻿using UnityEngine;
+﻿//#define LineA
+using UnityEngine;
 using System.Collections;
+using System.Linq;
+using System.Collections.Generic;
 
 public class TextureDraw {
 
@@ -9,7 +12,8 @@ public class TextureDraw {
 		y0 = Screen.height - y0;
 		y1 = Screen.height - y1;
 
-		/*
+
+#if(LineA)
 
 		float x,y;
 		float dy = y1-y0;    
@@ -49,7 +53,10 @@ public class TextureDraw {
 			}
 
 		}
-		*/
+
+
+#else
+
 
 		int dy = (int)(y1-y0);
 		int dx = (int)(x1-x0);
@@ -98,6 +105,7 @@ public class TextureDraw {
 				tex.SetPixel(x0, y0, col);
 			}
 		}
+#endif
 
 
 	}
@@ -119,6 +127,16 @@ public class TextureDraw {
 		DrawLine(tex, rect.xMin, rect.yMax, rect.xMax, rect.yMax, color);
 		
 	}
+
+	public static Color[] clearfillColorArray;
+
+	public static void InitClearTexture(Texture2D tex)
+	{
+		Color fillColor  = Color.clear;
+
+		IEnumerable<Color> colors = Enumerable.Repeat(fillColor, tex.width * tex.height);
+		clearfillColorArray = colors.ToArray();
+	}
 	
 	public static void ClearTexture(Texture2D tex)
 	{
@@ -132,15 +150,22 @@ public class TextureDraw {
 		}
 		*/
 
-		Color fillColor  = Color.clear;
-		Color[] fillColorArray =  tex.GetPixels();
-		
+		//Color fillColor  = Color.clear;
+
+		//Color[] fillColorArray =  tex.GetPixels();
+
+
+
+		//IEnumerable<Color> colors = Enumerable.Repeat(fillColor, tex.width * tex.height);
+		//Color[] fillColorArray = colors.ToArray();
+		/*
 		for(var i = 0; i < fillColorArray.Length; ++i)
 		{
 			fillColorArray[i] = fillColor;
 		}
+		*/
 		
-		tex.SetPixels( fillColorArray );
+		tex.SetPixels(clearfillColorArray );
 
 	}
 	

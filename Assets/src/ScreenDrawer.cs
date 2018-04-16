@@ -6,7 +6,7 @@ public class ScreenDrawer : MonoBehaviour {
 
 	public Texture2D tex;
 	public GameObject some_cube;
-	public static int quadtree_max_depth = 5;
+	public static int quadtree_max_depth = 3;
 	public static int resolution = 64;
 	//create a 16x16 array of booleans
 	public bool[,] bool_values = new bool[resolution, resolution];
@@ -16,12 +16,14 @@ public class ScreenDrawer : MonoBehaviour {
 	public List<GameObject> cubes;
 
 	private QuadTreeNode quadtree_for_this_update;
+	public static int quadtree_Search_count = 0;
 	
 	// Use this for initialization
 	void Start () {
 		
 		cubes = new List<GameObject>();
 		tex = new Texture2D(Screen.width, Screen.height);
+		TextureDraw.InitClearTexture(tex);
 		TextureDraw.ClearTexture(tex);
 		init_cube_templates();
 		init_terrain_data();
@@ -29,7 +31,7 @@ public class ScreenDrawer : MonoBehaviour {
 		//draw_marched_squares();
 		
 		//create a bunch of cubes
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < 10; i++)
 		{
 			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(2.5f, 3f, 5f), Quaternion.identity)));
 		}
@@ -73,9 +75,15 @@ public class ScreenDrawer : MonoBehaviour {
 			}
 		}
 
-		quadtree_for_this_update = new QuadTreeNode(new Rect(0,0,Screen.width,Screen.height), bool_values, cubes, quadtree_max_depth, 1);
-		determine_terrain_data();
-		draw_marched_squares();
+		quadtree_Search_count++;
+
+		if(quadtree_Search_count % 2 == 0)
+		{
+			quadtree_for_this_update = new QuadTreeNode(new Rect(0,0,tex.width,tex.height), bool_values, cubes, quadtree_max_depth, 1);
+		}
+
+		//determine_terrain_data();
+		//draw_marched_squares();
 		//draw_cubes();
 		tex.Apply();
 	}
@@ -91,8 +99,8 @@ public class ScreenDrawer : MonoBehaviour {
 	void draw_marched_squares()
 	{
 	
-		int _multi_val_x = Screen.width / (resolution);
-		int _multi_val_y = Screen.height / (resolution);
+		int _multi_val_x = tex.width / (resolution);
+		int _multi_val_y = tex.height / (resolution);
 
 		/*
 
@@ -226,8 +234,8 @@ public class ScreenDrawer : MonoBehaviour {
 		//see if the cube is within the bounds of this cube, and if it is, set its terrain data to true.
 		//break out of the loop if the data is true for this cube
 		
-		int _multi_val_x = Screen.width / (resolution);
-		int _multi_val_y = Screen.height / (resolution );
+		int _multi_val_x = tex.width / (resolution);
+		int _multi_val_y = tex.height / (resolution );
 		
 		Camera cam = GetComponent<Camera>();
 
@@ -267,7 +275,7 @@ public class ScreenDrawer : MonoBehaviour {
 						Rect _r1 = RectangleCollisionChecker.BoundsToScreenRect(_cube.GetComponent<Renderer>().bounds);
 						//TextureDraw.DrawRectangle(tex, _r1, Color.yellow);
 
-						float r = (_r1.width );
+						float r = (_r1.width/2 );
 						float _threshold_value = (Mathf.Pow(r, 2))/( Mathf.Pow(( _r1.center.x - _r0.center.x), 2) + Mathf.Pow(( _r1.center.y - _r0.center.y), 2) );
 						_metaball_value += _threshold_value;
 
