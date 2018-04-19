@@ -7,7 +7,9 @@
 [Ll]ibrary/
 sysinfo.txt
 *.stackdump
- 
+*.psd
+*.png 
+
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
 # ===================================== #
@@ -21,6 +23,8 @@ sysinfo.txt
 /*.user
 /*.unityproj
 /*.booproj
+Assets/AvatarsDemo/TestModels/*
+
  
 # ============ #
 # OS generated #
