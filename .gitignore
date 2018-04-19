@@ -7,6 +7,9 @@
 [Ll]ibrary/
 sysinfo.txt
 *.stackdump
+*.psd
+*.png
+Assets/AvatarsDemo/TestModels/*
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
