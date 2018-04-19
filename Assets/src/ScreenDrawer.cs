@@ -5,9 +5,10 @@ using System.Collections.Generic;
 public class ScreenDrawer : MonoBehaviour {
 
 	public Texture2D tex;
+	public Color32[] resetColorArray;
 	public GameObject some_cube;
 	public static int quadtree_max_depth = 5;
-	public static int resolution = 64;
+	public static int resolution = 32;
 	//create a 16x16 array of booleans
 	public bool[,] bool_values = new bool[resolution, resolution];
 	public Vector2[][] marching_cube_templates = new Vector2[16][];
@@ -23,6 +24,7 @@ public class ScreenDrawer : MonoBehaviour {
 		cubes = new List<GameObject>();
 		tex = new Texture2D(Screen.width, Screen.height);
 		TextureDraw.ClearTexture(tex);
+		resetColorArray = tex.GetPixels32();
 		init_cube_templates();
 		init_terrain_data();
 
@@ -31,7 +33,7 @@ public class ScreenDrawer : MonoBehaviour {
 		//create a bunch of cubes
 		for(int i = 0; i < 5; i++)
 		{
-			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(2.5f, 3f, 5f), Quaternion.identity)));
+			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(2.5f - (1*(i%5)), (3f + (i*5)), 5f), Quaternion.identity)));
 		}
 		
 		/*
@@ -57,14 +59,17 @@ public class ScreenDrawer : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
+
 		Camera cam = GetComponent<Camera>();
-		
+
 		//Vector3 screen_coords = cam.WorldToScreenPoint(some_cube.transform.position);
-		TextureDraw.ClearTexture(tex);
+		//TextureDraw.ClearTexture(tex);
+		//tex = new Texture2D(Screen.width, Screen.height);
+		tex.SetPixels32(resetColorArray);
+		//tex.Apply();
 
 		//set everything to false
-		for(int i = 0; i<  resolution; i++)
+		for (int i = 0; i<  resolution; i++)
 		{
 			for(int j = 0; j<  resolution; j++)
 			{
@@ -76,7 +81,7 @@ public class ScreenDrawer : MonoBehaviour {
 		quadtree_for_this_update = new QuadTreeNode(new Rect(0,0,Screen.width,Screen.height), bool_values, cubes, quadtree_max_depth, 1);
 		determine_terrain_data();
 		draw_marched_squares();
-		//draw_cubes();
+		draw_cubes();
 		tex.Apply();
 	}
 	
@@ -94,7 +99,7 @@ public class ScreenDrawer : MonoBehaviour {
 		int _multi_val_x = Screen.width / (resolution);
 		int _multi_val_y = Screen.height / (resolution);
 
-		/*
+		
 
 		QuadTreeNode quad_tree = quadtree_for_this_update;
 		//first, carve up the region and parition them into areas with stuff
@@ -139,7 +144,7 @@ public class ScreenDrawer : MonoBehaviour {
 			}
 		}
 
-		*/
+		
 
 	
 				//now that the values are set, lets draw them
