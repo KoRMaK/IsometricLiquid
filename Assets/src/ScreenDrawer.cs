@@ -8,7 +8,7 @@ public class ScreenDrawer : MonoBehaviour {
 	public Color32[] resetColorArray;
 	public GameObject some_cube;
 	public static int quadtree_max_depth = 2;
-	public static int resolution = 64;
+	public static int resolution = 32;
 	//create a 16x16 array of booleans
 	public bool[,] bool_values = new bool[resolution, resolution];
 	public Vector2[][] marching_cube_templates = new Vector2[16][];
@@ -31,7 +31,7 @@ public class ScreenDrawer : MonoBehaviour {
 		//draw_marched_squares();
 		
 		//create a bunch of cubes
-		for(int i = 0; i < 5; i++)
+		for(int i = 0; i < 25; i++)
 		{
 			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(2.5f - (1*(i%5)), (3f + (i*5)), 5f), Quaternion.identity)));
 		}
@@ -327,7 +327,7 @@ public class ScreenDrawer : MonoBehaviour {
 
 						float r = (_r1.width );
 						float _threshold_value = (Mathf.Pow(r, 2))/( Mathf.Pow(( _r1.center.x - _r0.center.x), 2) + Mathf.Pow(( _r1.center.y - _r0.center.y), 2) );
-						_metaball_value += _threshold_value; //set this to just = and you get rid of the METAball dynamics. metaball - when many balls close together glob together to form a new ball (larger surface)
+						_metaball_value = _threshold_value; //set this to just = (or set to += for additive) and you get rid of the METAball dynamics. metaball - when many balls close together glob together to form a new ball (larger surface)
 
 						//_r1.y = Screen.height - _r1.y;
 						//Rect _r11 = new Rect(new Vector2(screen_coords.x, screen_coords.y), new Vector2(50, 50));
