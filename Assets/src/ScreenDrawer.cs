@@ -7,7 +7,7 @@ public class ScreenDrawer : MonoBehaviour {
 	public Texture2D tex;
 	public Color32[] resetColorArray;
 	public GameObject some_cube;
-	public static int quadtree_max_depth = 3;
+	public static int quadtree_max_depth = 2;
 	public static int resolution = 32;
 	//create a 16x16 array of booleans
 	public bool[,] bool_values = new bool[resolution, resolution];
@@ -33,7 +33,7 @@ public class ScreenDrawer : MonoBehaviour {
 		//draw_marched_squares();
 		
 		//create a bunch of cubes
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 25; i++)
 		{
 			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(2.5f - (1*(i%5)), (3f + (i*5)), 5f), Quaternion.identity)));
 		}
@@ -89,7 +89,7 @@ public class ScreenDrawer : MonoBehaviour {
 
 		determine_terrain_data();
 		draw_marched_squares();
-		draw_cubes();
+		//draw_cubes();
 		tex.Apply();
 	}
 	
@@ -104,8 +104,11 @@ public class ScreenDrawer : MonoBehaviour {
 	void draw_marched_squares()
 	{
 	
-		int _multi_val_x = tex.width / (resolution);
-		int _multi_val_y = tex.height / (resolution);
+		int _voxel_width = Screen.width / (resolution);
+		int _voxel_height = Screen.height / (resolution);
+		int half_voxel_width = _voxel_width / 2;
+		int half_voxel_height = _voxel_height / 2;
+		string status_str = "";
 
 		
 
@@ -119,16 +122,40 @@ public class ScreenDrawer : MonoBehaviour {
 		
 		foreach(Rect _rect in _rects_to_search)
 		{
+			status_str = "";
 			//TextureDraw.DrawRectangle(tex, _rect, Color.yellow);
 
-			int start_x = 0;//(int)_rect.x/_multi_val_x;
-			if( start_x > 1)
-				start_x -= 1;
+			//int start_x = 0;//(int)_rect.x/_voxel_width;
+			int start_x_voxel_index = (int)_rect.x/_voxel_width;
+			if (start_x_voxel_index > 1)
+				start_x_voxel_index -= 1;
 
-			for(int i = start_x; i<  Mathf.CeilToInt((_rect.x +_rect.width)/_multi_val_x) && i < resolution - 1; i++)
+			float rect_far_horizontal_side = _rect.x + _rect.width;
+			float rect_far_vertical_side = _rect.y + _rect.height;
+
+
+			int next_horizontal_voxel_index = Mathf.CeilToInt(rect_far_horizontal_side / _voxel_width);
+			int next_vertical_voxel_index = Mathf.CeilToInt(rect_far_vertical_side / _voxel_height);
+
+			for (int i = start_x_voxel_index; i<next_horizontal_voxel_index && i<resolution - 1; i++)
 			{
-				for(int j = (int)_rect.y/_multi_val_y; j<  Mathf.CeilToInt((_rect.y +_rect.height)/_multi_val_y) && j < resolution - 1; j++)
+				/*
+					status_str = "(_rect.x +_rect.width)/_voxel_width) " + ((_rect.x + _rect.width) / _voxel_width).ToString();
+					status_str += " CeilToInt " + Mathf.CeilToInt((_rect.x + _rect.width) / _voxel_width).ToString();
+					status_str += " i " + i.ToString() + " ";
+					status_str += " _voxel_width " + _voxel_width.ToString() + " ";
+					status_str += " rect.x " + _rect.x.ToString() + " ";
+					status_str += " _rect.width " + _rect.width.ToString() + " ";
+					Debug.Log(status_str);
+					
+					*/
+
+				int start_y_voxel_index = (int)_rect.y / _voxel_height;
+				int current_voxel_x = (i * _voxel_width);
+				for (int j = start_y_voxel_index; start_y_voxel_index < next_vertical_voxel_index && j < resolution - 1; j++)
 				{
+					int current_voxel_y = (j * _voxel_height);
+
 					int index = 0;
 					if(bool_values[i,j])
 						index += 8;
@@ -144,7 +171,18 @@ public class ScreenDrawer : MonoBehaviour {
 					{
 						for(int idx = 0; idx + 1< marching_cube_templates[index].Length; idx += 2)
 						{
-							TextureDraw.DrawLine(tex, (int)(marching_cube_templates[index][idx].x * _multi_val_x) + (i * _multi_val_x) + (_multi_val_x/2), (int)(marching_cube_templates[index][idx].y * _multi_val_y) + (j * _multi_val_y) + (_multi_val_y/2), (int)(marching_cube_templates[index][idx + 1].x * _multi_val_x) + (i * _multi_val_x) + (_multi_val_x/2), (int)(marching_cube_templates[index][idx + 1].y * _multi_val_y) + (j * _multi_val_y) + (_multi_val_y/2), Color.cyan);
+							int line_start_left = (int)(marching_cube_templates[index][idx].x * _voxel_width);
+							int line_finish_left = (int)(marching_cube_templates[index][idx + 1].x * _voxel_width);
+							int line_start_bottom = (int)(marching_cube_templates[index][idx].y * _voxel_height);
+							int line_finish_bottom = (int)(marching_cube_templates[index][idx + 1].y * _voxel_height);
+
+							int x0 = line_start_left + current_voxel_x + half_voxel_height;
+							int y0 = line_start_bottom + current_voxel_y + half_voxel_height;
+
+							int x1 = line_finish_left + current_voxel_x + half_voxel_height;
+							int y1 = line_finish_bottom + current_voxel_y + half_voxel_height;
+
+							TextureDraw.DrawLine(tex, x0, y0, x1, y1, Color.cyan);
 						}
 					}
 
@@ -154,8 +192,8 @@ public class ScreenDrawer : MonoBehaviour {
 
 		
 
-	
-				//now that the values are set, lets draw them
+	/*
+		//now that the values are set, lets draw them
 		for(int i = 0; i<  resolution - 1; i++)
 		{
 			for(int j = 0; j < resolution - 1; j++)
@@ -176,12 +214,12 @@ public class ScreenDrawer : MonoBehaviour {
 				{
 					for(int idx = 0; idx + 1< marching_cube_templates[index].Length; idx += 2)
 					{
-						TextureDraw.DrawLine(tex, (int)(marching_cube_templates[index][idx].x * _multi_val_x) + (i * _multi_val_x) + (_multi_val_x/2), (int)(marching_cube_templates[index][idx].y * _multi_val_y) + (j * _multi_val_y) + (_multi_val_y/2), (int)(marching_cube_templates[index][idx + 1].x * _multi_val_x) + (i * _multi_val_x) + (_multi_val_x/2), (int)(marching_cube_templates[index][idx + 1].y * _multi_val_y) + (j * _multi_val_y) + (_multi_val_y/2), Color.cyan);
+						TextureDraw.DrawLine(tex, (int)(marching_cube_templates[index][idx].x * _voxel_width) + (i * _voxel_width) + (_voxel_width/2), (int)(marching_cube_templates[index][idx].y * _voxel_height) + (j * _voxel_height) + (_voxel_height/2), (int)(marching_cube_templates[index][idx + 1].x * _voxel_width) + (i * _voxel_width) + (_voxel_width/2), (int)(marching_cube_templates[index][idx + 1].y * _voxel_height) + (j * _voxel_height) + (_voxel_height/2), Color.cyan);
 					}
 				}					
 			
 			}
-		}
+		}*/
 
 	}
 	
@@ -238,10 +276,15 @@ public class ScreenDrawer : MonoBehaviour {
 		// for each cube (n^3 now i think)
 		//see if the cube is within the bounds of this cube, and if it is, set its terrain data to true.
 		//break out of the loop if the data is true for this cube
-		
-		int _multi_val_x = tex.width / (resolution);
-		int _multi_val_y = tex.height / (resolution );
-		
+
+		int _voxel_width = Screen.width / (resolution);
+		int _voxel_height = Screen.height / (resolution);
+		int half_voxel_width = _voxel_width / 2;
+		int half_voxel_height = _voxel_height / 2;
+
+
+
+
 		Camera cam = GetComponent<Camera>();
 
 		QuadTreeNode quad_tree = quadtree_for_this_update;
@@ -255,12 +298,23 @@ public class ScreenDrawer : MonoBehaviour {
 		foreach(Rect _rect in _rects_to_search)
 		{
 			//TextureDraw.DrawRectangle(tex, _rect, Color.yellow);
+			float rect_far_horizontal_side = _rect.x + _rect.width;
+			float rect_far_vertical_side = _rect.y + _rect.height;
 
-			for(int i = (int)_rect.x/_multi_val_x; i<  Mathf.CeilToInt((_rect.x +_rect.width)/_multi_val_x) && i < resolution; i++)
+			int next_horizontal_voxel_index = Mathf.CeilToInt(rect_far_horizontal_side / _voxel_width);
+			int next_vertical_voxel_index = Mathf.CeilToInt(rect_far_vertical_side / _voxel_height);
+
+
+			int start_x_voxel_index = (int)_rect.x / _voxel_width;
+
+			for (int i = start_x_voxel_index; i< next_horizontal_voxel_index && i < resolution; i++)
 			{
-				for(int j = (int)_rect.y/_multi_val_y; j<  Mathf.CeilToInt((_rect.y +_rect.height)/_multi_val_y) && j < resolution; j++)
+
+				int start_y_voxel_index = (int)_rect.y / _voxel_height;
+				for (int j = start_y_voxel_index; j< next_vertical_voxel_index && j < resolution; j++)
 				{
-					Rect _r0 = new Rect(new Vector2(i * _multi_val_x, j * _multi_val_y), new Vector2(_multi_val_x, _multi_val_y));
+
+					Rect _r0 = new Rect(new Vector2(i * _voxel_width, j * _voxel_height), new Vector2(_voxel_width, _voxel_height));
 					//TextureDraw.DrawRectangle(tex, _r0, Color.blue);
 					float _metaball_value = 0;
 
@@ -270,9 +324,6 @@ public class ScreenDrawer : MonoBehaviour {
 
 						if( bool_values[i, j] ==  true)
 							break;
-
-
-						
 						
 						Vector3 screen_coords = cam.WorldToScreenPoint(_cube.transform.position);
 
@@ -282,7 +333,7 @@ public class ScreenDrawer : MonoBehaviour {
 
 						float r = (_r1.width/2 );
 						float _threshold_value = (Mathf.Pow(r, 2))/( Mathf.Pow(( _r1.center.x - _r0.center.x), 2) + Mathf.Pow(( _r1.center.y - _r0.center.y), 2) );
-						_metaball_value += _threshold_value;
+						_metaball_value = _threshold_value; //set this to just = (or set to += for additive) and you get rid of the METAball dynamics. metaball - when many balls close together glob together to form a new ball (larger surface)
 
 						//_r1.y = Screen.height - _r1.y;
 						//Rect _r11 = new Rect(new Vector2(screen_coords.x, screen_coords.y), new Vector2(50, 50));
@@ -293,13 +344,8 @@ public class ScreenDrawer : MonoBehaviour {
 							bool_values[i, j] =  true;
 							break;
 						}
-
-
 						
 					}
-
-
-
 				}
 			}
 		}
