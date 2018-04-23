@@ -127,7 +127,7 @@ public class ScreenDrawer : MonoBehaviour {
 				start_x_voxel_index -= 1;
 
 			float rect_far_horizontal_side = _rect.x + _rect.width;
-			float rect_far_vertical_side = _rect.y + _rect.height;
+			float rect_far_vertical_side = _rect.y + _rect.height; 
 
 
 			int next_horizontal_voxel_index = Mathf.CeilToInt(rect_far_horizontal_side / _voxel_width);
