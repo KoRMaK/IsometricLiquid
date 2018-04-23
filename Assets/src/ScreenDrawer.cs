@@ -85,7 +85,7 @@ public class ScreenDrawer : MonoBehaviour {
 		quadtree_for_this_update = new QuadTreeNode(new Rect(0,0,Screen.width,Screen.height), bool_values, cubes, quadtree_max_depth, 1);
 		determine_terrain_data();
 		draw_marched_squares();
-		draw_cubes();
+		//draw_cubes();
 		tex.Apply();
 	}
 	
