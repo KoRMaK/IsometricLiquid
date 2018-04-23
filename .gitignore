@@ -10,6 +10,8 @@ sysinfo.txt
 *.psd
 *.png
 Assets/AvatarsDemo/TestModels/*
+isoliq_Data/
+isoliq.exe
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
