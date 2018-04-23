@@ -119,9 +119,10 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 372212939}
-  m_LocalRotation: {x: -.707127094, y: 2.80063034e-07, z: .707086444, w: -2.120087e-07}
-  m_LocalPosition: {x: -.0309999995, y: .0810000002, z: .0810000002}
-  m_LocalScale: {x: .285384297, y: .182444617, z: .775489032}
+  m_LocalRotation: {x: -0.7071271, y: 0.00000028006303, z: 0.70708644, w: -0.0000002120087}
+  m_LocalPosition: {x: -0.031, y: 0.081, z: 0.081}
+  m_LocalScale: {x: 0.2853843, y: 0.18244462, z: 0.77548903}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 319650657}
   m_RootOrder: 1
@@ -134,7 +135,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 10
   m_Drag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -149,17 +150,22 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: fed4e78bda2b3de45954637fee164b8c, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -484,7 +490,7 @@ HingeJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 3.02767086, y: .0376046933, z: -.000146891602}
+  m_ConnectedAnchor: {x: 3.0276709, y: 0.037604697, z: -0.0001468916}
   m_UseSpring: 0
   m_Spring:
     spring: 0
@@ -500,7 +506,7 @@ HingeJoint:
     min: 0
     max: 0
     bounciness: 0
-    bounceMinVelocity: .200000003
+    bounceMinVelocity: 0.2
     contactDistance: 0
   m_BreakForce: Infinity
   m_BreakTorque: Infinity
@@ -515,7 +521,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
@@ -661,7 +667,7 @@ MonoBehaviour:
   Player2CalibrationPose: 0
   Player1Gestures: 
   Player2Gestures: 
-  MinTimeBetweenGestures: .699999988
+  MinTimeBetweenGestures: 0.7
   GestureListeners: []
   CalibrationText: {fileID: 0}
   HandCursor1: {fileID: 0}
@@ -715,7 +721,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 10
   m_Drag: 0
-  m_AngularDrag: .0500000007
+  m_AngularDrag: 0.05
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -730,17 +736,22 @@ MeshRenderer:
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
   m_Materials:
   - {fileID: 2100000, guid: fed4e78bda2b3de45954637fee164b8c, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
-  m_UseLightProbes: 1
-  m_ReflectionProbeUsage: 1
   m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
   m_ScaleInLightmap: 1
   m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
   m_ImportantGI: 0
-  m_AutoUVMaxDistance: .5
+  m_SelectedWireframeHidden: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
@@ -770,9 +781,11 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1892782756}
-  m_LocalRotation: {x: 5.07570697e-08, y: 3.00496978e-08, z: -4.19095052e-08, w: 1}
-  m_LocalPosition: {x: -.634000003, y: -.187000006, z: 4.82246351}
-  m_LocalScale: {x: .285384327, y: .182444662, z: .775489211}
+  m_LocalRotation: {x: 0.00000005075707, y: 0.000000030049698, z: -0.000000041909505,
+    w: 1}
+  m_LocalPosition: {x: -0.874, y: -0.187, z: 4.8224635}
+  m_LocalScale: {x: 1.45, y: 0.18244466, z: 0.7754892}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
