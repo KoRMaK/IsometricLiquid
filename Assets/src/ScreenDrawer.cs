@@ -31,11 +31,15 @@ public class ScreenDrawer : MonoBehaviour {
 		init_terrain_data();
 
 		//draw_marched_squares();
-		
+
 		//create a bunch of cubes
-		for(int i = 0; i < 25; i++)
+		int spawn_width = 5;
+		for (int i = 0; i < 25; i++)
 		{
-			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(2.5f - (1*(i%5)), (3f + (i*5)), 5f), Quaternion.identity)));
+			float _x = 2.5f - (0.2f * i);
+			float _y = 3f + (5 * (i % spawn_width));
+			float _z = 5f;
+			cubes.Add((GameObject)(Instantiate(cube_prefab, new Vector3(_x, _y, _z), Quaternion.identity)));
 		}
 		
 		/*
