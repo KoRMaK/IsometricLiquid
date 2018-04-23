@@ -12,6 +12,7 @@ sysinfo.txt
 Assets/AvatarsDemo/TestModels/*
 isoliq_Data/
 isoliq.exe
+*.orig
  
 # ===================================== #
 # Visual Studio / MonoDevelop generated #
